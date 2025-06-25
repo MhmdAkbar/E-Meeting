@@ -39,7 +39,7 @@ export default function Register() {
             <p className="text-[#919191] text-[14px]">Create your account here</p>
             </div>
             <div>
-                <AuthForm title="login" fields={registerFields} />
+                <AuthForm title="Create Account" fields={registerFields} />
             </div>
             <p className="text-[#919191]">Already have an account? <Link to='/' className="text-[#EB5B00]"> Login </Link>  </p>
         </div>
