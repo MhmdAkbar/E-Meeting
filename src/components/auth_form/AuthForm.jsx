@@ -1,4 +1,7 @@
 import { useState } from 'react';
+import HidePw from './icon/HidePw';
+import ShowPw from './icon/ShowPw';
+import CommonButton from '../ui/button/CommonButton';
 
 function AuthForm({ title = "Login", fields = [], onSubmit }) {
   const initialFormState = fields.reduce((acc, field) => {
@@ -8,6 +11,7 @@ function AuthForm({ title = "Login", fields = [], onSubmit }) {
 
   const [formData, setFormData] = useState(initialFormState);
   const [showPasswordMap, setShowPasswordMap] = useState({});
+  const [errors, setErrors] = useState({});
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -19,24 +23,34 @@ function AuthForm({ title = "Login", fields = [], onSubmit }) {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    const newErrors = {};
 
     for (let key in formData) {
       const value = formData[key];
       if (!value) {
-        alert(`${key} must be filled`);
-        return;
+        newErrors[key] = `${key} must be filled`;
       }
 
-      // Validasi email
-      if (key === "email") {
+      if (key.toLowerCase() === "email") {
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         if (!emailRegex.test(value)) {
-          alert("please insert the correct email");
-          return;
+          newErrors[key] = "Please insert a valid email";
         }
       }
     }
 
+    if ("password" in formData && "confirmPassword" in formData) {
+      if (formData.password !== formData.confirmPassword) {
+        newErrors["confirmPassword"] = "Please match your password";
+      }
+    }
+
+    if (Object.keys(newErrors).length > 0) {
+      setErrors(newErrors);
+      return;
+    }
+
+    setErrors({});
     onSubmit(formData);
     setFormData(initialFormState);
   };
@@ -58,12 +72,14 @@ function AuthForm({ title = "Login", fields = [], onSubmit }) {
           <div key={field.name} className="relative">
             <label className="block mb-1">{field.label}</label>
             <input
-              type={isPassword && !showPassword ? "password" : field.type || "text"}
+              type={isPassword ? (showPassword ? "text" : "password") : field.type || "text"}
               name={field.name}
               placeholder={field.placeholder || ""}
               value={formData[field.name]}
               onChange={handleChange}
-              className="w-full border border-[#EBEBEB] px-3 py-2 rounded pr-10 text-xs"
+              className={`w-full border px-3 py-2 rounded pr-10 text-xs ${
+                errors[field.name] ? "border-red-500" : "border-[#EBEBEB]"
+              }`}
             />
             {isPassword && (
               <button
@@ -71,16 +87,16 @@ function AuthForm({ title = "Login", fields = [], onSubmit }) {
                 onClick={() => togglePasswordVisibility(field.name)}
                 className="absolute right-2 top-8 text-sm text-gray-600 hover:text-gray-800"
               >
-                {showPassword ? '🙈' : '👁️'}
+                {showPassword ? <HidePw/> : <ShowPw/>}
               </button>
+            )}
+            {errors[field.name] && (
+              <p className="text-red-500 text-xs mt-1">{errors[field.name]}</p>
             )}
           </div>
         );
       })}
-
-      <button type="submit" className="w-full bg-[#EB5B00] text-white py-2 rounded">
-        {title}
-      </button>
+<CommonButton title={title}/>
     </form>
   );
 }

@@ -1,6 +1,8 @@
 import { Link } from "react-router-dom";
-import Logo from "../../components/logo/Logo";
-import AuthForm from "./AuthForm";
+// import Logo from "../../components/ui/logo/Logo";
+import AuthForm from "../../components/auth_form/AuthForm";
+import Logo from "../../components/ui/logo/Logo";
+// import AuthForm from "./AuthForm";
 
 export default function Register() {
  const registerFields = [
