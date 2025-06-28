@@ -1,4 +1,6 @@
 import { useState } from 'react';
+import CommonButton from '../ui/button/CommonButton';
+import SearchIcon from './icon/SearchIcon';
 
 export default function SearchBar({ onSearch, children, className = "", ...props }) {
   const [keyword, setKeyword] = useState('');
@@ -8,50 +10,49 @@ export default function SearchBar({ onSearch, children, className = "", ...props
   const handleSubmit = (e) => {
     e.preventDefault();
     onSearch({ keyword, roomType, capacity });
-    console.log(e)
+    console.log(e);
   };
 
   return (
-    <form {...props}
+    <form
+      {...props}
       onSubmit={handleSubmit}
-      className="flex flex-col md:flex-row gap-3 md:items-center p-4 bg-white rounded shadow"
+      className={`grid grid-cols-16 p-3 gap-3 ${className}`}
     >
-      <input
+      <div className='flex gap-1 items-center lg:col-span-6 border border-[#a8a2a2] text-[#C4C4C4] rounded-2xl px-2 py-4 text-sm w-full cursor-pointer'>
+        <SearchIcon/>
+        <input
         type="text"
         placeholder="Enter the keyword here..."
         value={keyword}
         onChange={(e) => setKeyword(e.target.value)}
-        className="border border-gray-300 rounded px-4 py-2 text-sm w-full md:w-64"
+         className="w-full bg-transparent focus:outline-none text-black placeholder:text-[#C4C4C4]"
       />
+      </div>
 
       <select
         value={roomType}
         onChange={(e) => setRoomType(e.target.value)}
-        className="border border-gray-300 rounded px-4 py-2 text-sm w-full md:w-40"
+        className="lg:col-span-4 border border-[#C4C4C4] text-[#C4C4C4] rounded-2xl px-2 py-4 text-sm w-full cursor-pointer"
       >
         <option value="">Room Type</option>
-        <option value="single">Single</option>
-        <option value="double">Double</option>
-        <option value="suite">Suite</option>
+        <option value="single">Small</option>
+        <option value="double">Medium</option>
+        <option value="suite">Large</option>
       </select>
 
       <select
         value={capacity}
         onChange={(e) => setCapacity(e.target.value)}
-        className="border border-gray-300 rounded px-4 py-2 text-sm w-full md:w-40"
+        className="lg:col-span-4 border border-[#C4C4C4] text-[#C4C4C4] rounded-2xl px-2 py-4 text-sm w-full cursor-pointer"
       >
         <option value="">Capacity</option>
-        <option value="1">1 Person</option>
-        <option value="2">2 People</option>
-        <option value="4">4 People</option>
+        <option value="1">&lt; 10 people</option>
+        <option value="2">11-50 people</option>
+        <option value="4">51-100 people</option>
       </select>
 
-      <button
-        type="submit"
-        className="border border-[#EB5B00] text-[#EB5B00] hover:bg-[#EB5B00] hover:text-white transition rounded px-6 py-2 text-sm w-full md:w-auto"
-      >
-        Search
-      </button>
+      <button className='lg:col-span-2 border-orange-600 border px-2 py-4 rounded-2xl text-orange-600 cursor-pointer'>Search</button>
     </form>
   );
 }

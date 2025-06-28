@@ -1,10 +1,10 @@
-import LogoutIcon from "./LogoutIcon";
+import LogoutIcon from "./icon/LogoutIcon";
 
 export default function Header({text = ''}) {
     return (
         <div className="flex justify-between px-3">
             <div>
-                <h1 className="text-xl">{text}</h1>
+                <h1 className="text-xl font-bold">{text}</h1>
             </div>
 
             <div className="flex justify-between  gap-5 items-center">

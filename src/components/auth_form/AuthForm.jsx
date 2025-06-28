@@ -96,7 +96,7 @@ function AuthForm({ title = "Login", fields = [], onSubmit }) {
           </div>
         );
       })}
-<CommonButton title={title}/>
+<CommonButton className='w-full' title={title}/>
     </form>
   );
 }

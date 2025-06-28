@@ -15,13 +15,13 @@ export default function RoomReservation() {
             <div className=" w-20">
                 <Navbar />
             </div>
-            <div className="bg-blue-600 flex-1">
-            <Header text="Reservation"/>
-            <div className=" border-[12px]">
-                <div className="flex">
-                    <SearchRoom onSearch={handleSearch}/>
+            <div className=" flex-1 pt-4">
+            <Header text="Room Reservation"/>
+            <div className=" border-[12px] border-[#C4C4C4]">
+                <div className="flex w-full ">
+                    <SearchRoom onSearch={handleSearch} className="flex-grow-[4]"/>
 
-                    <AddNewReservation />
+                    <AddNewReservation className="flex-grow-[1]" />
                 </div>
                 <RoomGallery/>
             </div>
