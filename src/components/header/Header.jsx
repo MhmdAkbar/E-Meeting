@@ -2,7 +2,7 @@ import LogoutIcon from "./icon/LogoutIcon";
 
 export default function Header({text = ''}) {
     return (
-        <div className="flex justify-between px-3">
+        <div className="flex justify-between px-3 sticky top-0 z-30 bg-white/70 backdrop-blur border-b border-gray-200 pt-3">
             <div>
                 <h1 className="text-xl font-bold">{text}</h1>
             </div>

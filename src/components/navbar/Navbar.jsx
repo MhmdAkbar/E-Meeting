@@ -10,7 +10,7 @@ export default function Navbar() {
   const currentPath = location.pathname;
 
   return (
-    <div className="flex flex-col gap-5 items-center py-3">
+    <div className="flex flex-col gap-5 items-center py-3 sticky left-0 top-0 pt-3 mt-3 ">
       <Logo text="" />
 
       <Link to="/">
