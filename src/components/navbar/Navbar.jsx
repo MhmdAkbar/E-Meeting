@@ -25,8 +25,8 @@ export default function Navbar() {
         <HistoryIcon color={currentPath === "/history" ? "#EB5B00" : "#C0C0C0"} />
       </Link>
 
-      <Link to="/settings">
-        <SettingIcon color={currentPath === "/settings" ? "#EB5B00" : "#C0C0C0"} />
+      <Link to="/account-settings">
+        <SettingIcon color={currentPath === "/account-settings" ? "#EB5B00" : "#C0C0C0"} />
       </Link>
     </div>
   );

@@ -1,8 +1,9 @@
 import Header from "../../components/header/Header";
 import Navbar from "../../components/navbar/Navbar";
-import SearchRoom from "../../components/reservation/SearchRoam";
+// import SearchRoom from "../../components/reservation/SearchRoam";
 import RoomGallery from "../../components/reservation/RoomGallery";
 import AddNewReservation from "../../components/reservation/AddNewReservation";
+import SearchBar from "../../components/reservation/SearchBar";
 
 export default function RoomReservation() {
   const handleSearch = (filters) => {
@@ -17,7 +18,7 @@ export default function RoomReservation() {
         <Header text="Room Reservation" />
         <div className=" border-[12px] border-[#C4C4C4]">
           <div className="flex w-full ">
-            <SearchRoom
+            <SearchBar
               onSearch={handleSearch}
               className="flex-grow-[4]"
               fields={[
