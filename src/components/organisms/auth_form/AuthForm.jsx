@@ -1,7 +1,7 @@
-import { useState } from 'react';
-import HidePw from './icon/HidePw';
-import ShowPw from './icon/ShowPw';
-import CommonButton from '../ui/button/CommonButton';
+import { useState } from "react";
+import HidePw from "../../molecules/icon/HidePw";
+import ShowPw from "../../molecules/icon/ShowPw";
+import CommonButton from "../../molecules/button/CommonButton";
 
 function AuthForm({ title = "Login", fields = [], onSubmit }) {
   const initialFormState = fields.reduce((acc, field) => {
@@ -15,9 +15,9 @@ function AuthForm({ title = "Login", fields = [], onSubmit }) {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData(prev => ({
+    setFormData((prev) => ({
       ...prev,
-      [name]: value
+      [name]: value,
     }));
   };
 
@@ -56,14 +56,17 @@ function AuthForm({ title = "Login", fields = [], onSubmit }) {
   };
 
   const togglePasswordVisibility = (name) => {
-    setShowPasswordMap(prev => ({
+    setShowPasswordMap((prev) => ({
       ...prev,
-      [name]: !prev[name]
+      [name]: !prev[name],
     }));
   };
 
   return (
-    <form onSubmit={handleSubmit} className="p-6 bg-white rounded max-w-sm mx-auto space-y-4 w-[380px]">
+    <form
+      onSubmit={handleSubmit}
+      className="p-6 bg-white rounded max-w-sm mx-auto space-y-4 w-[380px]"
+    >
       {fields.map((field) => {
         const isPassword = field.type === "password";
         const showPassword = showPasswordMap[field.name] ?? false;
@@ -72,7 +75,13 @@ function AuthForm({ title = "Login", fields = [], onSubmit }) {
           <div key={field.name} className="relative">
             <label className="block mb-1">{field.label}</label>
             <input
-              type={isPassword ? (showPassword ? "text" : "password") : field.type || "text"}
+              type={
+                isPassword
+                  ? showPassword
+                    ? "text"
+                    : "password"
+                  : field.type || "text"
+              }
               name={field.name}
               placeholder={field.placeholder || ""}
               value={formData[field.name]}
@@ -87,7 +96,7 @@ function AuthForm({ title = "Login", fields = [], onSubmit }) {
                 onClick={() => togglePasswordVisibility(field.name)}
                 className="absolute right-2 top-8 text-sm text-gray-600 hover:text-gray-800"
               >
-                {showPassword ? <HidePw/> : <ShowPw/>}
+                {showPassword ? <HidePw /> : <ShowPw />}
               </button>
             )}
             {errors[field.name] && (
@@ -96,7 +105,7 @@ function AuthForm({ title = "Login", fields = [], onSubmit }) {
           </div>
         );
       })}
-<CommonButton className='w-full' title={title}/>
+      <CommonButton className="w-full" title={title} />
     </form>
   );
 }

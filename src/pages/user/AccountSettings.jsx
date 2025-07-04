@@ -4,7 +4,7 @@ import Header from "../../components/header/Header";
 import AvatarProfile from "../../components/organisms/AvatarProfile";
 import AccountInfoForm from "../../components/organisms/AccountInfoForm";
 import PasswordSection from "../../components/organisms/PasswordSection";
-import CommonButton from "./../../components/ui/button/CommonButton";
+import CommonButton from "../../components/molecules/button/CommonButton";
 
 export default function AccountSettings() {
   const [form, setForm] = useState({

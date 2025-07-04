@@ -1,5 +1,5 @@
 import { Link, useLocation } from "react-router-dom";
-import Logo from "../ui/logo/Logo";
+import Logo from "../molecules/logo/Logo";
 import BackIcon from "./icon/BackIcon";
 import RoomIcon from "./icon/RoomIcon";
 import HistoryIcon from "./icon/HistoryIcon";
@@ -18,15 +18,21 @@ export default function Navbar() {
       </Link>
 
       <Link to="/room-reservation">
-        <RoomIcon color={currentPath === "/room-reservation" ? "#EB5B00" : "#C0C0C0"} />
+        <RoomIcon
+          color={currentPath === "/room-reservation" ? "#EB5B00" : "#C0C0C0"}
+        />
       </Link>
 
       <Link to="/history">
-        <HistoryIcon color={currentPath === "/history" ? "#EB5B00" : "#C0C0C0"} />
+        <HistoryIcon
+          color={currentPath === "/history" ? "#EB5B00" : "#C0C0C0"}
+        />
       </Link>
 
       <Link to="/account-settings">
-        <SettingIcon color={currentPath === "/account-settings" ? "#EB5B00" : "#C0C0C0"} />
+        <SettingIcon
+          color={currentPath === "/account-settings" ? "#EB5B00" : "#C0C0C0"}
+        />
       </Link>
     </div>
   );
