@@ -1,4 +1,5 @@
-import HumanIcon from "./icon/HumanIcon";
+// import HumanIcon from "../atoms/icon/HumanIcon";
+import HumanIcon from './../../atoms/icon/HumanIcon';
 
 export default function RoomGallery() {
   return (
@@ -31,9 +32,7 @@ export default function RoomGallery() {
                 <HumanIcon />
                 <span>10 people</span>
               </div>
-              <span className="font-semibold text-orange-500">
-                Rp300,000
-              </span>
+              <span className="font-semibold text-orange-500">Rp300,000</span>
             </div>
           </div>
         </div>

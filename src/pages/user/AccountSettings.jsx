@@ -1,10 +1,11 @@
 import { useState } from "react";
-import Navbar from "../../components/navbar/Navbar";
-import Header from "../../components/header/Header";
-import AvatarProfile from "../../components/organisms/AvatarProfile";
-import AccountInfoForm from "../../components/organisms/AccountInfoForm";
-import PasswordSection from "../../components/organisms/PasswordSection";
-import CommonButton from "../../components/molecules/button/CommonButton";
+import Navbar from "../../components/organisms/navbar/Navbar";
+// import Header from "../../components/header/Header";
+import AvatarProfile from "../../components/organisms/AccountSetting/AvatarProfile";
+import AccountInfoForm from "../../components/organisms/AccountSetting/AccountInfoForm";
+import PasswordSection from "../../components/organisms/AccountSetting/PasswordSection";
+import CommonButton from "../../components/atoms/button/CommonButton";
+import Header from "../../components/organisms/header/Header";
 
 export default function AccountSettings() {
   const [form, setForm] = useState({

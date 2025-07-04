@@ -1,11 +1,11 @@
-import Navbar from "../../components/navbar/Navbar";
-import dummyData from "../../components/reservation/DummyData";
-import DownloadIcon from "../../components/reservation/icon/DownloadIcon";
-import ReservationTable from "../../components/reservation/ReservationTable";
-import SearchBar from "../../components/reservation/SearchBar";
-import Header from "../../components/header/Header";
+import Navbar from "../../components/organisms/navbar/Navbar";
+import dummyData from "../../components/data/DummyData";
+import DownloadIcon from "../../components/atoms/icon/DownloadIcon";
+import ReservationTable from "../../components/organisms/ReservationTable/ReservationTable";
+import SearchBar from "../../components/molecules/SearchBar/SearchBar";
 import { useState } from "react";
-import { ActionIcon } from "../../components/reservation/icon/ActionIcon";
+import { ActionIcon } from "../../components/atoms/icon/ActionIcon";
+import Header from "../../components/organisms/header/Header";
 
 export default function History() {
   const [filters, setFilters] = useState({});
@@ -19,27 +19,27 @@ export default function History() {
 
   // Filter data
   const filteredData = dummyData.filter((item) => {
- const toDateObj = (str) => {
-    const [day, month, year] = str.split("/");
-    return new Date(`${year}-${month}-${day}`);
-  };
+    const toDateObj = (str) => {
+      const [day, month, year] = str.split("/");
+      return new Date(`${year}-${month}-${day}`);
+    };
 
-  if (filters.roomType && item.roomType !== filters.roomType) return false;
-  if (filters.status && item.status !== filters.status) return false;
+    if (filters.roomType && item.roomType !== filters.roomType) return false;
+    if (filters.status && item.status !== filters.status) return false;
 
-  // Filter berdasarkan tanggal
-  if (filters.startDate) {
-    const startDate = new Date(filters.startDate);
-    if (toDateObj(item.date) < startDate) return false;
-  }
+    // Filter berdasarkan tanggal
+    if (filters.startDate) {
+      const startDate = new Date(filters.startDate);
+      if (toDateObj(item.date) < startDate) return false;
+    }
 
-  if (filters.endDate) {
-    const endDate = new Date(filters.endDate);
-    if (toDateObj(item.date) > endDate) return false;
-  }
+    if (filters.endDate) {
+      const endDate = new Date(filters.endDate);
+      if (toDateObj(item.date) > endDate) return false;
+    }
 
-  return true;
-});
+    return true;
+  });
 
   const totalPages = Math.ceil(filteredData.length / rowsPerPage);
 
@@ -106,7 +106,7 @@ export default function History() {
               ]}
             />
             <div className="border rounded-2xl p-3 border-orange-500">
-            <DownloadIcon />
+              <DownloadIcon />
             </div>
           </div>
 
@@ -115,7 +115,7 @@ export default function History() {
             data={paginatedData}
             renderAction={(item) => (
               <button className="text-orange-500 hover:text-orange-700 cursor-pointer">
-                <ActionIcon/>
+                <ActionIcon />
               </button>
             )}
           />

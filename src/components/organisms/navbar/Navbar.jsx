@@ -1,9 +1,9 @@
 import { Link, useLocation } from "react-router-dom";
-import Logo from "../molecules/logo/Logo";
-import BackIcon from "./icon/BackIcon";
-import RoomIcon from "./icon/RoomIcon";
-import HistoryIcon from "./icon/HistoryIcon";
-import SettingIcon from "./icon/SettingIcon";
+import Logo from "../../atoms/logo/Logo";
+import BackIcon from "../../atoms/icon/BackIcon";
+import RoomIcon from "../../atoms/icon/RoomIcon";
+import HistoryIcon from "../../atoms/icon/HistoryIcon";
+import SettingIcon from "../../atoms/icon/SettingIcon";
 
 export default function Navbar() {
   const location = useLocation();

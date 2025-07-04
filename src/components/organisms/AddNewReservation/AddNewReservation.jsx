@@ -1,4 +1,4 @@
-import CommonButton from "../molecules/button/CommonButton";
+import CommonButton from "../../atoms/button/CommonButton";
 
 export default function AddNewReservation({
   children,

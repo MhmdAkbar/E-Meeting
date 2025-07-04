@@ -1,63 +1,11 @@
-import { Link, useNavigate } from "react-router-dom";
-import AuthForm from "../../components/organisms/auth_form/AuthForm";
-import axios from "axios";
-import Cookies from "js-cookie";
-import { jwtDecode } from "jwt-decode"; // ✅ pakai curly braces
-import Logo from "../../components/molecules/logo/Logo";
+import { Link } from "react-router-dom";
+import { useLogin } from "../../hooks/useLogin";
+// import LoginForm from "../../components/organisms/LoginForm";
+import Logo from "../../components/atoms/logo/Logo";
+import LoginForm from "../../components/organisms/login_form/LoginForm";
 
 export default function Login() {
-  const navigate = useNavigate();
-
-  const loginFields = [
-    {
-      name: "username",
-      label: "Username",
-      type: "text",
-      placeholder: "Masukkan username",
-    },
-    {
-      name: "password",
-      label: "Password",
-      type: "password",
-      placeholder: "Masukkan password",
-    },
-  ];
-
-  const handleLogin = async (formData) => {
-    try {
-      const res = await axios.post(
-        "http://172.16.148.101:8080/api/v1/auth/login",
-        {
-          username: formData.username,
-          password: formData.password,
-        }
-      );
-
-      const token = res.data.token;
-
-      if (token) {
-        // ✅ Decode token
-        const decoded = jwtDecode(token); // hasil: { exp, user_id, role, username, ... }
-        const role = decoded.role;
-
-        // ✅ Simpan ke cookies
-        Cookies.set("token", token, { expires: 1 });
-        Cookies.set("role", role, { expires: 1 });
-
-        alert("Login berhasil!");
-
-        // ✅ Redirect sesuai role (opsional)
-        if (role === "admin") {
-          navigate("/user_list");
-        } else {
-          navigate("/room-reservation");
-        }
-      }
-    } catch (error) {
-      console.error("Login error:", error);
-      alert("Username atau password salah");
-    }
-  };
+  const { handleLogin } = useLogin();
 
   return (
     <div className="bg-[url(../../img/background/bg-login.jpg)] bg-cover min-w-screen min-h-screen flex justify-start">
@@ -69,9 +17,7 @@ export default function Login() {
             Please enter your username and password here!
           </p>
         </div>
-        <div>
-          <AuthForm title="login" fields={loginFields} onSubmit={handleLogin} />
-        </div>
+        <LoginForm onSubmit={handleLogin} />
         <p className="text-[#919191]">
           Don't have an account?{" "}
           <Link to="/register" className="text-[#EB5B00]">

@@ -1,9 +1,9 @@
-import Header from "../../components/header/Header";
-import Navbar from "../../components/navbar/Navbar";
-// import SearchRoom from "../../components/reservation/SearchRoam";
-import RoomGallery from "../../components/reservation/RoomGallery";
-import AddNewReservation from "../../components/reservation/AddNewReservation";
-import SearchBar from "../../components/reservation/SearchBar";
+
+import Navbar from "../../components/organisms/navbar/Navbar";
+import SearchBar from "../../components/molecules/SearchBar/SearchBar";
+import Header from "../../components/organisms/header/Header";
+import RoomGallery from './../../components/organisms/RoomGallery/RoomGallery';
+import AddNewReservation from "../../components/organisms/AddNewReservation/AddNewReservation";
 
 export default function RoomReservation() {
   const handleSearch = (filters) => {

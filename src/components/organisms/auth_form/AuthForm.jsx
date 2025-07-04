@@ -1,7 +1,7 @@
 import { useState } from "react";
-import HidePw from "../../molecules/icon/HidePw";
-import ShowPw from "../../molecules/icon/ShowPw";
-import CommonButton from "../../molecules/button/CommonButton";
+import HidePw from "../../atoms/icon/HidePw";
+import ShowPw from "../../atoms/icon/ShowPw";
+import CommonButton from "../../atoms/button/CommonButton";
 
 function AuthForm({ title = "Login", fields = [], onSubmit }) {
   const initialFormState = fields.reduce((acc, field) => {

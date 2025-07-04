@@ -1,5 +1,5 @@
 import { useState } from "react";
-import SearchIcon from "./icon/SearchIcon";
+import SearchIcon from "../../atoms/icon/SearchIcon";
 
 export default function SearchBar({
   onSearch,

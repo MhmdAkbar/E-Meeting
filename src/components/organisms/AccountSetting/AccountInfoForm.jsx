@@ -1,7 +1,7 @@
-import InputField from './../molecules/InputField';
-import SelectField from './../molecules/SelectField';
+import InputField from "../../atoms/InputField";
+import SelectField from "../../atoms/SelectField";
 export default function AccountInfoForm({ form, onChange, isEditing }) {
-    console.log("isEditing di AccountInfoForm:", isEditing);
+  console.log("isEditing di AccountInfoForm:", isEditing);
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
@@ -19,12 +19,7 @@ export default function AccountInfoForm({ form, onChange, isEditing }) {
         onChange={onChange}
         readOnly={!isEditing}
       />
-      <InputField
-        label="Role"
-        name="role"
-        value={form.role}
-        readOnly={true}
-      />
+      <InputField label="Role" name="role" value={form.role} readOnly={true} />
       <InputField
         label="Status"
         name="status"
