@@ -1,5 +1,5 @@
-import InputField from "../../atoms/InputField";
-import SelectField from "../../atoms/SelectField";
+import InputField from "../../atoms/form/InputField";
+import SelectField from "../../atoms/form/SelectField";
 export default function AccountInfoForm({ form, onChange, isEditing }) {
   console.log("isEditing di AccountInfoForm:", isEditing);
 

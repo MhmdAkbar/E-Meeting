@@ -1,6 +1,6 @@
-import AuthForm from './../auth_form/AuthForm';
+import AuthForm from "../auth_form/AuthForm";
 
-export default function LoginForm({ onSubmit }) {
+export default function LoginFields({ onSubmit }) {
   const loginFields = [
     {
       name: "username",

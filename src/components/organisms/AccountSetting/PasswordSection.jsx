@@ -1,4 +1,4 @@
-import InputField from "../../atoms/InputField";
+import InputField from "../../atoms/form/InputField";
 
 export default function PasswordSection({ form, onChange, isEditing }) {
   console.log("isEditing di AccountInfoForm:", isEditing);
