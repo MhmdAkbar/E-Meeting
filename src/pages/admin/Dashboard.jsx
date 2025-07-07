@@ -51,7 +51,7 @@ export default function Dashboard() {
                   type: "date",
                   label: "Start Date",
                   placeholder: "yyyy-mm-dd",
-                  colSpan: "lg:col-span-4",
+                  colSpan: "lg:col-span-7",
                   defaultValue: new Date().toISOString().split("T")[0],
                 },
                 {
@@ -59,7 +59,7 @@ export default function Dashboard() {
                   type: "date",
                   label: "End Date",
                   placeholder: "yyyy-mm-dd",
-                  colSpan: "lg:col-span-4",
+                  colSpan: "lg:col-span-7",
                   defaultValue: new Date().toISOString().split("T")[0],
                 },
               ]}

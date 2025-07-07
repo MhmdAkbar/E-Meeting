@@ -2,6 +2,7 @@ import BackIcon from "../components/atoms/icon/BackIcon";
 import RoomIcon from "../components/atoms/icon/RoomIcon";
 import HistoryIcon from "../components/atoms/icon/HistoryIcon";
 import SettingIcon from "../components/atoms/icon/SettingIcon";
+import { DashboardIcon } from "../components/atoms/icon/admin/DashboardIcon";
 
 export const navbarConfig = {
   user: [
@@ -12,8 +13,8 @@ export const navbarConfig = {
   ],
   admin: [
     {
-      path: "/user_list",
-      icon: <span className="text-sm font-semibold">Dashboard</span>,
+      path: "/dashboard",
+      icon: <DashboardIcon/>,
     },
     {
       path: "/reports",

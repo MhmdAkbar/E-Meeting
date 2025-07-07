@@ -1,5 +1,6 @@
 import { useState } from "react";
 import SearchIcon from "../../atoms/icon/SearchIcon";
+import CommonButton from "../../atoms/button/CommonButton";
 
 export default function SearchBar({
   onSearch,
@@ -22,6 +23,9 @@ export default function SearchBar({
     onSearch(formData);
   };
 
+  const commonClass =
+    "w-full h-[48px] px-3 py-2 border border-[#C4C4C4] rounded-2xl text-sm text-[#C4C4C4] bg-white";
+
   return (
     <form
       {...props}
@@ -32,7 +36,6 @@ export default function SearchBar({
         const colSpan =
           field.colSpan ||
           "col-span-1 sm:col-span-4 md:col-span-4 lg:col-span-4";
-        const commonClass = `border border-[#C4C4C4] text-[#C4C4C4] rounded-2xl px-2 py-4 text-sm w-full`;
 
         const wrapperClass = `${colSpan} flex flex-col gap-1`;
 
@@ -44,17 +47,15 @@ export default function SearchBar({
                   {field.label}
                 </label>
               )}
-              <div className="h-full">
-                <div className="flex gap-1 items-center border border-[#a8a2a2] text-[#C4C4C4] rounded-2xl px-2 py-4 text-sm w-full h-full">
-                  {field.icon === "search" && <SearchIcon />}
-                  <input
-                    type="text"
-                    placeholder={field.placeholder}
-                    value={formData[field.name]}
-                    onChange={(e) => handleChange(field.name, e.target.value)}
-                    className="w-full bg-transparent focus:outline-none text-black placeholder:text-[#C4C4C4]"
-                  />
-                </div>
+              <div className="flex items-center gap-2 border border-[#a8a2a2] rounded-2xl px-3 py-2 bg-white h-[48px]">
+                {field.icon === "search" && <SearchIcon />}
+                <input
+                  type="text"
+                  placeholder={field.placeholder}
+                  value={formData[field.name]}
+                  onChange={(e) => handleChange(field.name, e.target.value)}
+                  className={`w-full bg-transparent focus:outline-none text-black placeholder:text-[#C4C4C4] ${field.inputClassName || ""}`}
+                />
               </div>
             </div>
           );
@@ -71,7 +72,7 @@ export default function SearchBar({
               <select
                 value={formData[field.name]}
                 onChange={(e) => handleChange(field.name, e.target.value)}
-                className={`${commonClass} cursor-pointer`}
+                className={`${commonClass} cursor-pointer ${field.inputClassName || ""}`}
               >
                 <option value="">{field.placeholder}</option>
                 {field.options?.map((opt) => (
@@ -97,7 +98,7 @@ export default function SearchBar({
                 placeholder={field.placeholder}
                 value={formData[field.name]}
                 onChange={(e) => handleChange(field.name, e.target.value)}
-                className={commonClass}
+                className={`${commonClass} ${field.inputClassName || ""}`}
               />
             </div>
           );
@@ -106,12 +107,7 @@ export default function SearchBar({
         return null;
       })}
 
-      <button
-        type="submit"
-        className="col-span-1 sm:col-span-2 md:col-span-2 lg:col-span-2 border-orange-600 border px-2 py-4 rounded-2xl text-orange-600 cursor-pointer h-full"
-      >
-        Search
-      </button>
+      <CommonButton title="Search" className="w-30 rounded-xl h-[48px] mt-auto" />
     </form>
   );
 }

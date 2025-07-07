@@ -1,17 +1,14 @@
 import CommonButton from "../../atoms/button/CommonButton";
 
 export default function AddNewReservation({
-  children,
   className = "",
   ...props
 }) {
   return (
-    <>
-      <CommonButton
-        title="+Add New Reservation"
-        className="m-4 px-2 py-4 rounded-2xl cursor-pointer"
-        {...props}
-      />
-    </>
+    <CommonButton
+      title="+ Add New Reservation"
+      className={`whitespace-nowrap px-1 py-3 rounded-2xl ${className}`}
+      {...props}
+    />
   );
 }
