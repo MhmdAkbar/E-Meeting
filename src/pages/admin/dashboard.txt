@@ -1,0 +1,116 @@
+import { useEffect, useState } from "react";
+// import axios from "axios";
+import { api } from "../../utils/api"; // gunakan instance axios yang sudah ada
+import SearchBar from "../../components/molecules/SearchBar/SearchBar";
+import Header from "../../components/organisms/header/Header";
+import Navbar from "../../components/organisms/navbar/Navbar";
+
+export default function Dashboard() {
+  const [dashboardData, setDashboardData] = useState(null);
+
+  const handleSearch = async (filters) => {
+    try {
+      const { start_date, end_date } = filters;
+
+     const response = await api.get("/admin/dashboard", {
+  params: { start_date, end_date },
+});
+
+
+      setDashboardData(response.data);
+    } catch (error) {
+      console.error("Gagal mengambil data dashboard:", error);
+    }
+  };
+
+  useEffect(() => {
+    // Ambil data default saat pertama kali halaman dimuat
+    const today = new Date().toISOString().split("T")[0];
+    handleSearch({ start_date: today, end_date: today });
+  }, []);
+
+  return (
+    <div className="flex w-full max-w-screen overflow-x-hidden">
+      <div className="w-20">
+        <Navbar />
+      </div>
+
+      <div className="flex-1 p-4">
+        <Header text="Dashboard" />
+
+        <div className="mt-4">
+          <SearchBar
+            onSearch={handleSearch}
+            fields={[
+              {
+                name: "start_date",
+                type: "date",
+                label: "Start Date",
+                placeholder: "yyyy-mm-dd",
+                colSpan: "lg:col-span-4",
+                defaultValue: new Date().toISOString().split("T")[0],
+              },
+              {
+                name: "end_date",
+                type: "date",
+                label: "End Date",
+                placeholder: "yyyy-mm-dd",
+                colSpan: "lg:col-span-4",
+                defaultValue: new Date().toISOString().split("T")[0],
+              },
+            ]}
+          />
+        </div>
+
+        {dashboardData && (
+          <div className="mt-6">
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
+              <DashboardCard title="Total Omzet" value={dashboardData.total_omzet} />
+              <DashboardCard title="Total Reservations" value={dashboardData.total_reservations} />
+              <DashboardCard title="Total Visitors" value={dashboardData.total_visitors} />
+              <DashboardCard title="Total Rooms" value={dashboardData.total_rooms} />
+            </div>
+
+            <div className="mt-8">
+              <h2 className="text-xl font-semibold mb-3">Room Stats</h2>
+              <div className="overflow-x-auto">
+                <table className="w-full text-left border border-gray-200 rounded-lg">
+                  <thead className="bg-gray-100">
+                    <tr>
+                      <th className="p-2 border">Room Name</th>
+                      <th className="p-2 border">Bookings</th>
+                      <th className="p-2 border">Hours</th>
+                      <th className="p-2 border">Occupancy</th>
+                      <th className="p-2 border">Revenue</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {dashboardData.room_stats.map((room) => (
+                      <tr key={room.room_id} className="odd:bg-white even:bg-gray-50">
+                        <td className="p-2 border">{room.room_name}</td>
+                        <td className="p-2 border">{room.total_bookings}</td>
+                        <td className="p-2 border">{room.total_hours}</td>
+                        <td className="p-2 border">{room.occupancy_rate}</td>
+                        <td className="p-2 border">{room.revenue}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}
+
+// Komponen kecil untuk menampilkan info utama
+function DashboardCard({ title, value }) {
+  return (
+    <div className="bg-white rounded-xl shadow p-4 border border-gray-200">
+      <div className="text-sm text-gray-500">{title}</div>
+      <div className="text-lg font-bold text-gray-900">{value}</div>
+    </div>
+  );
+}

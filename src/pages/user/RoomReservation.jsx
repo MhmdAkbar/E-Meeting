@@ -10,7 +10,7 @@ export default function RoomReservation() {
     console.log(handleSearch);
   };
   return (
-    <div className="flex min-w-screen ">
+    <div className="flex max-w-screen-xl ">
       <div className=" w-20">
         <Navbar />
       </div>

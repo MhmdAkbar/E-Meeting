@@ -20,7 +20,7 @@ export function useLogin() {
 
         alert("Login berhasil!");
 
-        navigate(role === "admin" ? "/user_list" : "/room-reservation");
+        navigate(role === "admin" ? "/dashboard" : "/room-reservation");
       }
     } catch (error) {
       console.error("Login error:", error);
