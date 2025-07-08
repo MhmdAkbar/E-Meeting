@@ -70,14 +70,14 @@ export default function History() {
                   type: "date",
                   placeholder: "Booking Date",
                   label: "Start Date",
-                  colSpan: "lg:col-span-4",
+                  colSpan: "lg:col-span-3",
                 },
                 {
                   name: "endDate",
                   type: "date",
                   placeholder: "Booking Date",
                   label: "End Date",
-                  colSpan: "lg:col-span-4",
+                  colSpan: "lg:col-span-3",
                 },
                 {
                   name: "roomType",

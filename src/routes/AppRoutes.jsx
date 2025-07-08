@@ -4,9 +4,11 @@ import Register from "../pages/user/Register";
 import RoomReservation from "../pages/user/RoomReservation";
 import History from "../pages/user/History";
 import AccountSettings from "../pages/user/AccountSettings";
-import ProtectedRoute from "./ProtectedRoute"; 
+import ProtectedRoute from "./ProtectedRoute";
 import Login from "../pages/auth/Login";
-import Dashboard from './../pages/admin/Dashboard';
+import Dashboard from "./../pages/admin/Dashboard";
+import ReservationSchedule from "../pages/admin/ReservationSchedule";
+import RoomEdit from "../pages/admin/RoomEdit";
 
 export default function AppRoutes() {
   return (
@@ -47,6 +49,24 @@ export default function AppRoutes() {
           </ProtectedRoute>
         }
       />
+
+      <Route
+        path="/reservation-schedule"
+        element={
+          <ProtectedRoute>
+            <ReservationSchedule />
+          </ProtectedRoute>
+        }
+      ></Route>
+
+      <Route
+        path="Room-Edit"
+        element={
+          <ProtectedRoute>
+            <RoomEdit />
+          </ProtectedRoute>
+        }
+      ></Route>
     </Routes>
   );
 }
