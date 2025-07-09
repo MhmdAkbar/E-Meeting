@@ -1,23 +1,37 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { api } from "./../../../utils/api";
 
-export default function CreateRoomForm({ onClose, onSubmit }) {
+export default function CreateRoomForm({
+  onClose,
+  onSubmit,
+  initialData = null,
+}) {
   const [formData, setFormData] = useState({
-    name: "",
-    capacity: "",
-    price_per_hour: "",
-    status: "active",
-    url_room_pic: "",
+    name: initialData?.name || "",
+    capacity: initialData?.capacity || "",
+    price_per_hour: initialData?.price_per_hour || "",
+    status: initialData?.status || "active",
+    url_room_pic: initialData?.url_room_pic || "",
   });
+
+  useEffect(() => {
+    if (initialData) {
+      setFormData({
+        name: initialData.name || "",
+        capacity: initialData.capacity || "",
+        price_per_hour: initialData.price_per_hour || "",
+        status: initialData.status || "active",
+        url_room_pic: initialData.url_room_pic || "",
+      });
+    }
+  }, [initialData]);
 
   const [uploading, setUploading] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
-  const [successMessage, setSuccessMessage] = useState(""); // ✅ NEW
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
     setErrorMessage("");
-    setSuccessMessage("");
   };
 
   const handleFileChange = async (e) => {
@@ -29,7 +43,6 @@ export default function CreateRoomForm({ onClose, onSubmit }) {
 
     setUploading(true);
     setErrorMessage("");
-    setSuccessMessage("");
 
     try {
       const response = await api.post("/upload-image", form, {
@@ -60,24 +73,14 @@ export default function CreateRoomForm({ onClose, onSubmit }) {
       url_room_pic: formData.url_room_pic,
     };
 
-    // panggil onSubmit dari parent
     onSubmit(payload);
-
-    // ✅ Tampilkan notifikasi berhasil
-    setSuccessMessage("✅ Room successfully created!");
-
-    // Optional: auto-close modal setelah 2.5 detik
-    setTimeout(() => {
-      setSuccessMessage("");
-      onClose(); // tutup modal
-    }, 2500);
   };
 
   return (
     <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50">
-      <div className="bg-white rounded-lg p-6 w-1/2 space-y-4">
+      <div className="bg-white rounded-lg p-6 w-full max-w-xl space-y-4">
         {/* Upload Gambar */}
-        <div className="border border-dashed border-orange-500 p-4 text-center rounded h-70 flex items-center justify-center">
+        <div className="border border-dashed border-orange-500 p-4 text-center rounded flex flex-col items-center justify-center space-y-2">
           <input
             type="file"
             onChange={handleFileChange}
@@ -90,12 +93,15 @@ export default function CreateRoomForm({ onClose, onSubmit }) {
               {uploading ? "Uploading..." : "Choose File"}
             </div>
           </label>
-        </div>
 
-        {/* Status Upload */}
-        {formData.url_room_pic && (
-          <p className="text-green-600 text-sm">✅ Image uploaded</p>
-        )}
+          {formData.url_room_pic && (
+            <img
+              src={formData.url_room_pic}
+              alt="Uploaded Room"
+              className="mt-2 rounded w-full max-w-xs h-auto shadow"
+            />
+          )}
+        </div>
 
         {/* Error */}
         {errorMessage && (
@@ -104,14 +110,7 @@ export default function CreateRoomForm({ onClose, onSubmit }) {
           </div>
         )}
 
-        {/* ✅ Success Message */}
-        {successMessage && (
-          <div className="bg-green-100 text-green-800 px-4 py-2 rounded border border-green-400 text-sm">
-            {successMessage}
-          </div>
-        )}
-
-        {/* Input Form */}
+        {/* Input Fields */}
         <input
           type="text"
           name="name"

@@ -20,7 +20,16 @@ export default function SearchBar({
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    onSearch(formData);
+
+    // fungsi agar data kosong tidak dikirim
+    const cleanedData = {};
+    for (const key in formData) {
+      if (formData[key] !== "") {
+        cleanedData[key] = formData[key];
+      }
+    }
+
+    onSearch(cleanedData);
   };
 
   const commonClass =
@@ -54,7 +63,9 @@ export default function SearchBar({
                   placeholder={field.placeholder}
                   value={formData[field.name]}
                   onChange={(e) => handleChange(field.name, e.target.value)}
-                  className={`w-full bg-transparent focus:outline-none text-black placeholder:text-[#C4C4C4] ${field.inputClassName || ""}`}
+                  className={`w-full bg-transparent focus:outline-none text-black placeholder:text-[#C4C4C4] ${
+                    field.inputClassName || ""
+                  }`}
                 />
               </div>
             </div>
@@ -72,7 +83,9 @@ export default function SearchBar({
               <select
                 value={formData[field.name]}
                 onChange={(e) => handleChange(field.name, e.target.value)}
-                className={`${commonClass} cursor-pointer ${field.inputClassName || ""}`}
+                className={`${commonClass} cursor-pointer ${
+                  field.inputClassName || ""
+                }`}
               >
                 <option value="">{field.placeholder}</option>
                 {field.options?.map((opt) => (
@@ -107,7 +120,10 @@ export default function SearchBar({
         return null;
       })}
 
-      <CommonButton title="Search" className="w-30 rounded-xl h-[48px] mt-auto" />
+      <CommonButton
+        title="Search"
+        className="w-30 rounded-xl h-[48px] mt-auto"
+      />
     </form>
   );
 }
