@@ -77,17 +77,20 @@ export default function CreateRoomForm({
   };
 
   return (
-    <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50">
-      <div className="bg-white rounded-lg p-6 w-full max-w-xl space-y-4">
+    <div className="fixed inset-0 bg-black/40 flex items-center justify-end z-50">
+      <div className="bg-white rounded-lg p-6 w-full max-w-xl space-y-4 ">
         {/* Upload Gambar */}
-        <div className="border border-dashed border-orange-500 p-4 text-center rounded flex flex-col items-center justify-center space-y-2">
+        <div className="h-[300px] border border-dashed border-orange-500 p-4 text-center rounded flex flex-col items-center justify-center space-y-2">
           <input
             type="file"
             onChange={handleFileChange}
             className="hidden"
             id="room-file"
           />
-          <label htmlFor="room-file" className="cursor-pointer text-orange-600">
+          <label
+            htmlFor="room-file"
+            className="cursor-pointer text-orange-600 "
+          >
             <div>📁 Drag and Drop your file here or</div>
             <div className="mt-2 inline-block bg-orange-500 text-white px-4 py-1 rounded">
               {uploading ? "Uploading..." : "Choose File"}
@@ -98,7 +101,7 @@ export default function CreateRoomForm({
             <img
               src={formData.url_room_pic}
               alt="Uploaded Room"
-              className="mt-2 rounded w-full max-w-xs h-auto shadow"
+              className="mt-2 rounded w-full max-w-xs max-h-40 object-contain"
             />
           )}
         </div>

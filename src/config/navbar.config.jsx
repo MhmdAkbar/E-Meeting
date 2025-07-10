@@ -4,7 +4,8 @@ import HistoryIcon from "../components/atoms/icon/HistoryIcon";
 import SettingIcon from "../components/atoms/icon/SettingIcon";
 import DashboardIcon from "../components/atoms/icon/admin/DashboardIcon";
 import ReservationScheduleIcon from "../components/atoms/icon/admin/ReservationScheduleIcon";
-import RoomEditIcon from "../components/atoms/icon/admin/RoomEditIcon";
+import RoomManajemenIcon from "../components/atoms/icon/admin/RoomManajemenIcon";
+import { RoomReportsIcon } from "../components/atoms/icon/admin/RoomReportsIcon";
 
 export const navbarConfig = {
   user: [
@@ -15,9 +16,12 @@ export const navbarConfig = {
   ],
   admin: [
     { path: "/dashboard", icon: <DashboardIcon className="" /> },
-    { path: "/reservation-schedule", icon: <ReservationScheduleIcon className="" /> },
-    { path: "/room-edit", icon: <RoomEditIcon className="" /> },
-    { path: "/reports", icon: <span>Reports</span> }, // bisa pakai icon juga
+    {
+      path: "/reservation-schedule",
+      icon: <ReservationScheduleIcon className="" />,
+    },
+    { path: "/room-manajemen", icon: <RoomManajemenIcon className="" /> },
+    { path: "/room-reports", icon: <RoomReportsIcon className=''/>}, // bisa pakai icon juga
     { path: "/admin-settings", icon: <span>Settings</span> },
   ],
 };

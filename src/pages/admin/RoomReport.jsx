@@ -6,9 +6,9 @@ import SearchBar from "../../components/molecules/SearchBar/SearchBar";
 import { ActionIcon } from "../../components/atoms/icon/ActionIcon";
 import Header from "../../components/organisms/header/Header";
 import { fetchReservationHistory } from "../../services/HistoryService";
-import { formatDateTimeLocal } from "./../../utils/dateUtils";
+import { formatDateTimeLocal } from "../../utils/dateUtils";
 
-export default function History() {
+export default function RoomReport() {
   const [filters, setFilters] = useState({});
   const [reservations, setReservations] = useState([]);
   const [loading, setLoading] = useState(false);

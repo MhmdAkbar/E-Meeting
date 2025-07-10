@@ -8,7 +8,8 @@ import ProtectedRoute from "./ProtectedRoute";
 import Login from "../pages/auth/Login";
 import Dashboard from "./../pages/admin/Dashboard";
 import ReservationSchedule from "../pages/admin/ReservationSchedule";
-import RoomEdit from "../pages/admin/RoomEdit";
+import RoomManajemen from "../pages/admin/RoomManajemen";
+import RoomReport from './../pages/admin/RoomReport';
 
 export default function AppRoutes() {
   return (
@@ -60,10 +61,19 @@ export default function AppRoutes() {
       ></Route>
 
       <Route
-        path="Room-Edit"
+        path="Room-Manajemen"
         element={
           <ProtectedRoute>
-            <RoomEdit />
+            <RoomManajemen />
+          </ProtectedRoute>
+        }
+      ></Route>
+
+      <Route
+        path="Room-Reports"
+        element={
+          <ProtectedRoute>
+            <RoomReport />
           </ProtectedRoute>
         }
       ></Route>
