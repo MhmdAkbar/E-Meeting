@@ -8,6 +8,7 @@ export default function RoomGallery({
   refreshKey,
   isAdmin = false,
   onEdit,
+  onRoomClick,
 }) {
   const [rooms, setRooms] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -38,6 +39,7 @@ export default function RoomGallery({
   };
 
   useEffect(() => {
+    console.log("FETCHING ROOM WITH FILTER:", filter);
     fetchRooms(filter);
   }, [filter, refreshKey]);
 
@@ -72,7 +74,10 @@ export default function RoomGallery({
         {rooms.map((room) => (
           <div
             key={room.id}
-            className="group rounded-2xl shadow-sm overflow-hidden bg-white flex flex-col transition-transform duration-300 hover:scale-105 hover:shadow-lg"
+            className="group rounded-2xl shadow-sm overflow-hidden bg-white flex flex-col transition-transform duration-300 hover:scale-105 hover:shadow-lg" 
+            onClick={() => {
+              if (onRoomClick) onRoomClick(room);
+            }}
           >
             <div
               className="relative h-[200px] bg-cover bg-center"
