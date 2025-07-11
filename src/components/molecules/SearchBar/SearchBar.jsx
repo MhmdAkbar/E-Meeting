@@ -121,6 +121,7 @@ export default function SearchBar({
       })}
 
       <CommonButton
+      type='submit'
         title="Search"
         className="w-30 rounded-xl h-[48px] mt-auto"
       />

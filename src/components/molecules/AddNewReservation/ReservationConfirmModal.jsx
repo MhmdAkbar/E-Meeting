@@ -7,6 +7,7 @@ export default function ReservationConfirmModal({
   form,
   room,
   snackList,
+  readonly = false,
 }) {
   if (!isOpen) return null;
 
@@ -18,11 +19,11 @@ export default function ReservationConfirmModal({
   };
 
   const durationHours =
-    Number(form.end_time?.split(":")[0]) - Number(form.start_time?.split(":")[0]);
+    Number(form?.end_time?.split(":")[0]) - Number(form?.start_time?.split(":")[0]) || 0;
 
   const roomTotal = durationHours * Number(room?.price_per_hour || 0);
 
-  const snackTotal = form.snacks.reduce((total, s) => {
+  const snackTotal = (form?.snacks || []).reduce((total, s) => {
     const snack = snackList.find(
       (sn) => sn.snack_id === s.snack_id || sn.id === s.snack_id
     );
@@ -32,21 +33,21 @@ export default function ReservationConfirmModal({
   const grandTotal = roomTotal + snackTotal;
 
   return (
-    <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
-      <div className="bg-white rounded-lg p-6 w-full max-w-md space-y-4 shadow-xl">
+    <div className="fixed inset-0 bg-black/50 flex items-center-safe justify-end z-50">
+      <div className="bg-white rounded-lg p-6 w-full me-5 max-w-md space-y-4 shadow-xl max-h-screen overflow-y-auto">
         <h2 className="text-lg font-semibold text-center">Konfirmasi Reservasi</h2>
 
         {/* RUANGAN */}
         {room && (
           <div>
-            <p className="font-medium text-orange-600">{room.name}</p>
+            <p className="font-medium text-orange-600">{room.name || "-"}</p>
             <img
               src={room.image_url || room.url_room_pic || "/img/room/room.png"}
-              alt={room.name}
+              alt={room.name || "Room"}
               className="w-full h-40 object-cover rounded mt-1"
             />
             <p className="text-sm text-gray-600 mt-1">
-              Harga / jam: Rp{Number(room.price_per_hour).toLocaleString()}
+              Harga / jam: Rp{Number(room.price_per_hour || 0).toLocaleString()}
             </p>
             <p className="text-sm text-gray-600">
               Durasi: {durationHours} jam → Total: Rp{roomTotal.toLocaleString()}
@@ -56,17 +57,17 @@ export default function ReservationConfirmModal({
 
         {/* INFORMASI LAIN */}
         <div className="text-sm space-y-1">
-          <p><strong>Nama Pemesan:</strong> {form.name}</p>
-          <p><strong>No HP:</strong> {form.no_hp}</p>
-          <p><strong>Company:</strong> {form.company}</p>
-          <p><strong>Tanggal:</strong> {form.date}</p>
-          <p><strong>Waktu:</strong> {form.start_time} - {form.end_time}</p>
-          <p><strong>Jumlah Pengunjung:</strong> {form.visitor_count}</p>
-          {form.Note && <p><strong>Catatan:</strong> {form.Note}</p>}
+          <p><strong>Nama Pemesan:</strong> {form?.name || "-"}</p>
+          <p><strong>No HP:</strong> {form?.no_hp || "-"}</p>
+          <p><strong>Company:</strong> {form?.company || "-"}</p>
+          <p><strong>Tanggal:</strong> {form?.date || "-"}</p>
+          <p><strong>Waktu:</strong> {form?.start_time || "-"} - {form?.end_time || "-"}</p>
+          <p><strong>Jumlah Pengunjung:</strong> {form?.visitor_count || 0}</p>
+          {form?.Note && <p><strong>Catatan:</strong> {form.Note}</p>}
         </div>
 
         {/* SNACK */}
-        {form.snacks.length > 0 && (
+        {form?.snacks?.length > 0 && (
           <div>
             <p className="font-semibold mt-3 mb-1">Snack Dipesan:</p>
             <ul className="list-disc list-inside text-sm">
@@ -100,14 +101,16 @@ export default function ReservationConfirmModal({
         {/* ACTION BUTTON */}
         <div className="flex justify-end gap-2 mt-4">
           <button onClick={onClose} className="bg-gray-300 px-3 py-1 rounded">
-            Batal
+            {readonly ? "Tutup" : "Batal"}
           </button>
-          <button
-            onClick={onConfirm}
-            className="bg-orange-500 text-white px-3 py-1 rounded"
-          >
-            Konfirmasi
-          </button>
+          {!readonly && (
+            <button
+              onClick={onConfirm}
+              className="bg-orange-500 text-white px-3 py-1 rounded"
+            >
+              Konfirmasi
+            </button>
+          )}
         </div>
       </div>
     </div>

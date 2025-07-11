@@ -1,18 +1,19 @@
 import { useEffect, useState } from "react";
 import Navbar from "../../components/organisms/navbar/Navbar";
-import DownloadIcon from "../../components/atoms/icon/DownloadIcon";
-import ReservationTable from "../../components/organisms/ReservationTable/ReservationTable";
-import SearchBar from "../../components/molecules/SearchBar/SearchBar";
-import { ActionIcon } from "../../components/atoms/icon/ActionIcon";
 import Header from "../../components/organisms/header/Header";
 import { fetchReservationHistory } from "../../services/HistoryService";
-import { formatDateTimeLocal } from "./../../utils/dateUtils";
+import { formatDateTimeLocal } from "../../utils/dateUtils";
+import HistoryReportTemplate from "../../components/templates/HistoryReport/HistoryReportTemplate";
+import ReservationConfirmModal from "../../components/molecules/AddNewReservation/ReservationConfirmModal";
+import { fetchSnacks } from "../../services/snackService";
 
 export default function History() {
   const [filters, setFilters] = useState({});
   const [reservations, setReservations] = useState([]);
+  const [snackList, setSnackList] = useState([]);
   const [loading, setLoading] = useState(false);
-
+  const [showConfirmModal, setShowConfirmModal] = useState(false);
+  const [selectedReservation, setSelectedReservation] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
   const [rowsPerPage, setRowsPerPage] = useState(10);
 
@@ -22,22 +23,32 @@ export default function History() {
   };
 
   useEffect(() => {
+    const fetchSnackData = async () => {
+      try {
+        const data = await fetchSnacks();
+        setSnackList(data);
+      } catch (error) {
+        console.error("Failed to fetch snacks", error);
+      }
+    };
+
+    fetchSnackData();
+  }, []);
+
+  useEffect(() => {
     const fetchData = async () => {
       if (!filters.startDate || !filters.endDate) return;
 
       setLoading(true);
       try {
         const rawData = await fetchReservationHistory({
-          start_datetime: formatDateTimeLocal(
-            new Date(filters.startDate),
-            false
-          ),
+          start_datetime: formatDateTimeLocal(new Date(filters.startDate), false),
           end_datetime: formatDateTimeLocal(new Date(filters.endDate), true),
         });
 
-        // Normalisasi agar cocok dengan <ReservationTable>
         const mappedData = rawData
           .map((item) => ({
+            ...item,
             date: new Date(item.start_time).toLocaleDateString("id-ID"),
             roomName: item.room_name,
             roomType:
@@ -52,21 +63,40 @@ export default function History() {
                 : item.status === "canceled"
                 ? "Cancel"
                 : "Booked",
+            room: item.room_details,
+            form: {
+              name: item.user_name,
+              no_hp: item.phone,
+              company: item.company,
+              date: item.start_time.split(" ")[0],
+              start_time: new Date(item.start_time).toLocaleTimeString("id-ID", {
+                hour: "2-digit",
+                minute: "2-digit",
+              }),
+              end_time: new Date(item.end_time).toLocaleTimeString("id-ID", {
+                hour: "2-digit",
+                minute: "2-digit",
+              }),
+              visitor_count: item.visitor_count,
+              Note: item.notes,
+              // ✅ Format ulang snack agar bisa dibaca modal
+              snacks: (item.snacks || []).map((snackId) => ({
+                snack_id: snackId,
+                quantity: 1,
+              })),
+            },
           }))
           .filter((item) => {
             const roomTypeFilter = filters.roomType
               ? item.roomType === filters.roomType
               : true;
-
             const statusFilter = filters.status
               ? item.status === filters.status
               : true;
-
             return roomTypeFilter && statusFilter;
           });
 
         setReservations(mappedData);
-        console.log("Data normalisasi:", mappedData);
       } catch (error) {
         console.error("Failed to fetch reservation history", error);
       } finally {
@@ -77,15 +107,19 @@ export default function History() {
     fetchData();
   }, [filters]);
 
- useEffect(() => {
-  // Menampilkan semua data dari tahun 2000 sampai 2100
-  setFilters({
-    startDate: "2000-01-01",
-    endDate: "2100-01-01",
-    roomType: "",  // semua tipe
-    status: "",    // semua status
-  });
-}, []);
+  useEffect(() => {
+    setFilters({
+      startDate: "2000-01-01",
+      endDate: "2100-01-01",
+      roomType: "",
+      status: "",
+    });
+  }, []);
+
+  const handleViewReservation = (reservation) => {
+    setSelectedReservation(reservation);
+    setShowConfirmModal(true);
+  };
 
   const totalPages = Math.ceil(reservations.length / rowsPerPage);
   const paginatedData = reservations.slice(
@@ -94,119 +128,50 @@ export default function History() {
   );
 
   return (
-    <div className="flex min-w-screen">
-      <div className="w-20">
-        <Navbar />
-      </div>
+    <div className="w-full bg-gray-50">
+      <div className="flex max-w-screen-xl mx-auto min-h-screen">
+        <div className="w-20">
+          <Navbar />
+        </div>
 
-      <div className="flex-1 pt-4">
-        <Header text="History" />
-
-        <div className="border-[12px] border-[#C4C4C4]">
-          {/* Search Bar */}
-          <div className="flex items-center px-2">
-            <SearchBar
-              className="flex-grow-[4]"
-              onSearch={handleSearch}
-              fields={[
-                {
-                  name: "startDate",
-                  type: "date",
-                  label: "Start Date",
-                  colSpan: "lg:col-span-3",
-                },
-                {
-                  name: "endDate",
-                  type: "date",
-                  label: "End Date",
-                  colSpan: "lg:col-span-3",
-                },
-                {
-                  name: "roomType",
-                  type: "select",
-                  label: "Room Type",
-                  placeholder: "All Types",
-                  colSpan: "lg:col-span-3",
-                  options: [
-                    { label: "Small", value: "Small" },
-                    { label: "Medium", value: "Medium" },
-                    { label: "Large", value: "Large" },
-                  ],
-                },
-                {
-                  name: "status",
-                  type: "select",
-                  label: "Status",
-                  placeholder: "All Status",
-                  colSpan: "lg:col-span-3",
-                  options: [
-                    { label: "Paid", value: "Paid" },
-                    { label: "Cancel", value: "Cancel" },
-                    { label: "Booked", value: "Booked" },
-                  ],
-                },
-              ]}
-            />
-
-            <div className="border rounded-2xl p-3 border-orange-500">
-              <DownloadIcon />
-            </div>
-          </div>
-
-          {/* Table */}
-          {loading ? (
-            <div className="text-center py-10">Loading...</div>
-          ) : (
-            <ReservationTable
-              data={paginatedData}
-              renderAction={(item) => (
-                <button className="text-orange-500 hover:text-orange-700 cursor-pointer">
-                  <ActionIcon />
+        <div className="flex-1 pt-4 px-4">
+          <Header text="History" />
+          <HistoryReportTemplate
+            title="History"
+            filterProps={{ onSearch: handleSearch }}
+            tableProps={{
+              loading,
+              data: paginatedData,
+              currentPage,
+              totalPages,
+              rowsPerPage,
+              onPageChange: setCurrentPage,
+              onRowsPerPageChange: setRowsPerPage,
+              renderAction: (reservation) => (
+                <button
+                  onClick={() => handleViewReservation(reservation)}
+                  className="text-orange-600 hover:underline"
+                >
+                  View
                 </button>
-              )}
-            />
-          )}
+              ),
+            }}
+          />
 
-          {/* Pagination */}
-          <div className="flex justify-between items-center px-4 py-2 text-sm">
-            <div className="flex items-center gap-2">
-              <span>Rows per page:</span>
-              <select
-                value={rowsPerPage}
-                onChange={(e) => {
-                  setRowsPerPage(Number(e.target.value));
-                  setCurrentPage(1);
-                }}
-                className="border px-2 py-1 rounded"
-              >
-                {[5, 10, 20, 50].map((n) => (
-                  <option key={n} value={n}>
-                    {n}
-                  </option>
-                ))}
-              </select>
-            </div>
-
-            <div className="flex items-center gap-2">
-              <button
-                disabled={currentPage === 1}
-                onClick={() => setCurrentPage((p) => p - 1)}
-                className="px-2 py-1 border rounded disabled:opacity-50"
-              >
-                Prev
-              </button>
-              <span>
-                Page {currentPage} of {totalPages || 1}
-              </span>
-              <button
-                disabled={currentPage === totalPages || totalPages === 0}
-                onClick={() => setCurrentPage((p) => p + 1)}
-                className="px-2 py-1 border rounded disabled:opacity-50"
-              >
-                Next
-              </button>
-            </div>
-          </div>
+          {/* Modal Konfirmasi */}
+          <ReservationConfirmModal
+            isOpen={showConfirmModal}
+            onClose={() => setShowConfirmModal(false)}
+            onConfirm={() => {
+              // tambahkan fungsi pembayaran di sini kalau ingin
+              setShowConfirmModal(false);
+            }}
+            form={selectedReservation?.form}
+            room={selectedReservation?.room}
+            snackList={snackList}
+            readonly={true}
+            showPayButton={true} // ✅ tombol bayar tetap muncul
+          />
         </div>
       </div>
     </div>

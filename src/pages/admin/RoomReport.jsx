@@ -1,12 +1,10 @@
 import { useEffect, useState } from "react";
 import Navbar from "../../components/organisms/navbar/Navbar";
-import DownloadIcon from "../../components/atoms/icon/DownloadIcon";
-import ReservationTable from "../../components/organisms/ReservationTable/ReservationTable";
-import SearchBar from "../../components/molecules/SearchBar/SearchBar";
-import { ActionIcon } from "../../components/atoms/icon/ActionIcon";
 import Header from "../../components/organisms/header/Header";
+// import HistoryTemplate from "../../components/templates/HistoryTemplate";
 import { fetchReservationHistory } from "../../services/HistoryService";
 import { formatDateTimeLocal } from "../../utils/dateUtils";
+import HistoryReportTemplate from "../../components/templates/HistoryReport/HistoryReportTemplate";
 
 export default function RoomReport() {
   const [filters, setFilters] = useState({});
@@ -35,7 +33,6 @@ export default function RoomReport() {
           end_datetime: formatDateTimeLocal(new Date(filters.endDate), true),
         });
 
-        // Normalisasi agar cocok dengan <ReservationTable>
         const mappedData = rawData
           .map((item) => ({
             date: new Date(item.start_time).toLocaleDateString("id-ID"),
@@ -57,16 +54,13 @@ export default function RoomReport() {
             const roomTypeFilter = filters.roomType
               ? item.roomType === filters.roomType
               : true;
-
             const statusFilter = filters.status
               ? item.status === filters.status
               : true;
-
             return roomTypeFilter && statusFilter;
           });
 
         setReservations(mappedData);
-        console.log("Data normalisasi:", mappedData);
       } catch (error) {
         console.error("Failed to fetch reservation history", error);
       } finally {
@@ -77,15 +71,14 @@ export default function RoomReport() {
     fetchData();
   }, [filters]);
 
- useEffect(() => {
-  // Menampilkan semua data dari tahun 2000 sampai 2100
-  setFilters({
-    startDate: "2000-01-01",
-    endDate: "2100-01-01",
-    roomType: "",  // semua tipe
-    status: "",    // semua status
-  });
-}, []);
+  useEffect(() => {
+    setFilters({
+      startDate: "2000-01-01",
+      endDate: "2100-01-01",
+      roomType: "",
+      status: "",
+    });
+  }, []);
 
   const totalPages = Math.ceil(reservations.length / rowsPerPage);
   const paginatedData = reservations.slice(
@@ -94,119 +87,29 @@ export default function RoomReport() {
   );
 
   return (
-    <div className="flex min-w-screen">
-      <div className="w-20">
-        <Navbar />
-      </div>
+    <div className="w-full bg-gray-50">
+      <div className="flex max-w-screen-xl mx-auto min-h-screen">
+        <div className="w-20">
+          <Navbar />
+        </div>
 
-      <div className="flex-1 pt-4">
-        <Header text="History" />
-
-        <div className="border-[12px] border-[#C4C4C4]">
-          {/* Search Bar */}
-          <div className="flex items-center px-2">
-            <SearchBar
-              className="flex-grow-[4]"
-              onSearch={handleSearch}
-              fields={[
-                {
-                  name: "startDate",
-                  type: "date",
-                  label: "Start Date",
-                  colSpan: "lg:col-span-3",
-                },
-                {
-                  name: "endDate",
-                  type: "date",
-                  label: "End Date",
-                  colSpan: "lg:col-span-3",
-                },
-                {
-                  name: "roomType",
-                  type: "select",
-                  label: "Room Type",
-                  placeholder: "All Types",
-                  colSpan: "lg:col-span-3",
-                  options: [
-                    { label: "Small", value: "Small" },
-                    { label: "Medium", value: "Medium" },
-                    { label: "Large", value: "Large" },
-                  ],
-                },
-                {
-                  name: "status",
-                  type: "select",
-                  label: "Status",
-                  placeholder: "All Status",
-                  colSpan: "lg:col-span-3",
-                  options: [
-                    { label: "Paid", value: "Paid" },
-                    { label: "Cancel", value: "Cancel" },
-                    { label: "Booked", value: "Booked" },
-                  ],
-                },
-              ]}
-            />
-
-            <div className="border rounded-2xl p-3 border-orange-500">
-              <DownloadIcon />
-            </div>
-          </div>
-
-          {/* Table */}
-          {loading ? (
-            <div className="text-center py-10">Loading...</div>
-          ) : (
-            <ReservationTable
-              data={paginatedData}
-              renderAction={(item) => (
-                <button className="text-orange-500 hover:text-orange-700 cursor-pointer">
-                  <ActionIcon />
-                </button>
-              )}
-            />
-          )}
-
-          {/* Pagination */}
-          <div className="flex justify-between items-center px-4 py-2 text-sm">
-            <div className="flex items-center gap-2">
-              <span>Rows per page:</span>
-              <select
-                value={rowsPerPage}
-                onChange={(e) => {
-                  setRowsPerPage(Number(e.target.value));
-                  setCurrentPage(1);
-                }}
-                className="border px-2 py-1 rounded"
-              >
-                {[5, 10, 20, 50].map((n) => (
-                  <option key={n} value={n}>
-                    {n}
-                  </option>
-                ))}
-              </select>
-            </div>
-
-            <div className="flex items-center gap-2">
-              <button
-                disabled={currentPage === 1}
-                onClick={() => setCurrentPage((p) => p - 1)}
-                className="px-2 py-1 border rounded disabled:opacity-50"
-              >
-                Prev
-              </button>
-              <span>
-                Page {currentPage} of {totalPages || 1}
-              </span>
-              <button
-                disabled={currentPage === totalPages || totalPages === 0}
-                onClick={() => setCurrentPage((p) => p + 1)}
-                className="px-2 py-1 border rounded disabled:opacity-50"
-              >
-                Next
-              </button>
-            </div>
-          </div>
+        <div className="flex-1 pt-4 px-4">
+          <Header text="History" />
+          <HistoryReportTemplate
+            title="History"
+            filterProps={{
+              onSearch: handleSearch,
+            }}
+            tableProps={{
+              loading,
+              data: paginatedData,
+              currentPage,
+              totalPages,
+              rowsPerPage,
+              onPageChange: setCurrentPage,
+              onRowsPerPageChange: setRowsPerPage,
+            }}
+          />
         </div>
       </div>
     </div>
