@@ -7,7 +7,8 @@ import { jwtDecode } from "jwt-decode";
 import Cookies from "js-cookie";
 import { getDateTimeString } from "../../../utils/dateUtils";
 import { createReservation } from "../../../services/ReservationService";
-import RoomPickerModal from './RoomPickerModal';
+import RoomPickerModal from "./RoomPickerModal";
+import ReservationConfirmModal from './ReservationConfirmModal';
 
 export default function AddReservationModal({ isOpen, onClose }) {
   const [form, setForm] = useState({
@@ -29,6 +30,7 @@ export default function AddReservationModal({ isOpen, onClose }) {
   const [snackList, setSnackList] = useState([]);
   const [showRoomPicker, setShowRoomPicker] = useState(false);
   const [selectedRoom, setSelectedRoom] = useState(null);
+  const [showConfirmModal, setShowConfirmModal] = useState(false);
 
   useEffect(() => {
     const token = Cookies.get("token");
@@ -187,7 +189,7 @@ export default function AddReservationModal({ isOpen, onClose }) {
           </button>
           <button
             className="px-4 py-2 rounded bg-orange-500 text-white"
-            onClick={handleSubmit}
+            onClick={() => setShowConfirmModal(true)}
           >
             Save
           </button>
@@ -198,6 +200,16 @@ export default function AddReservationModal({ isOpen, onClose }) {
           isOpen={showSnackModal}
           onClose={() => setShowSnackModal(false)}
           onSelect={handleSelectSnacks}
+        />
+
+        {/* konfirmasi  */}
+        <ReservationConfirmModal
+          isOpen={showConfirmModal}
+          onClose={() => setShowConfirmModal(false)}
+          onConfirm={handleSubmit}
+          form={form}
+          room={selectedRoom}
+          snackList={snackList}
         />
       </div>
     </div>

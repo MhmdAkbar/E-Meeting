@@ -1,6 +1,4 @@
-import { useState } from "react";
-// import RoomGallery from "../RoomGallery/RoomGallery";
-import RoomGallery from './../../organisms/RoomGallery/RoomGallery';
+import RoomGallery from "./../../organisms/RoomGallery/RoomGallery";
 
 export default function RoomPickerModal({ isOpen, onClose, onSelect }) {
   if (!isOpen) return null;
@@ -13,9 +11,11 @@ export default function RoomPickerModal({ isOpen, onClose, onSelect }) {
         <RoomGallery
           isAdmin={false}
           onEdit={() => {}}
-        //   filter={{ status: "available" }}
           onRoomClick={(room) => {
-            onSelect(room);
+            onSelect({
+              ...room,
+              price: Number(room.price), // konversi price jadi number di sini
+            });
             onClose();
           }}
         />
